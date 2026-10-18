@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Piccante OS</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Piccante OS" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#111111" />
+    <script type="module" crossorigin src="/assets/index-DaM4ByKx.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BmH6OZ0_.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Vigilante: si tras cargar la página la app no ha pintado nada (módulo
+      // corrupto en caché, despliegue a medias), refresca los archivos con hash
+      // saltándose la caché y recarga una sola vez.
+      (function () {
+        var clave = 'picos-recarga'
+        addEventListener('load', function () {
+          setTimeout(function () {
+            var raiz = document.getElementById('root')
+            if (raiz && raiz.childElementCount) {
+              try { sessionStorage.removeItem(clave) } catch (e) {}
+              return
+            }
+            try {
+              if (sessionStorage.getItem(clave)) return
+              sessionStorage.setItem(clave, '1')
+            } catch (e) {}
+            var nodos = document.querySelectorAll('script[type=module][src], link[rel=modulepreload][href], link[rel=stylesheet][href]')
+            var urls = [].map.call(nodos, function (n) { return n.src || n.href })
+            Promise.all(urls.map(function (u) { return fetch(u, { cache: 'reload' }).catch(function () {}) }))
+              .then(function () { location.reload() })
+          }, 4000)
+        })
+      })()
+    </script>
+  </body>
+</html>
